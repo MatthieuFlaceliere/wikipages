@@ -40,6 +40,11 @@ object Main extends App {
         pages.foreach { page =>
           println(s"${page.title} - ${page.words}")
         }
+
+        val totalWords = this.totalWords(pages)
+        println(s"Total words: $totalWords")
+        val avgWords = totalWords / pages.length
+        println(s"Average words: $avgWords")
       }
       case Left(code) => println(s"Error: HTTP code $code")
     }
@@ -70,5 +75,9 @@ object Main extends App {
       val words = (result \ "wordcount").as[Int]
       WikiPage(title, words)
     }
+  }
+
+  def totalWords(pages: Seq[WikiPage]): Int = {
+    pages.foldLeft(0)((acc, page) => acc + page.words)
   }
 }
